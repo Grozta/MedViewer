@@ -1,7 +1,15 @@
 #!/usr/bin/env python
 # _*_ coding:utf-8 _*_
+import torch, gc
+
+gc.collect()
+torch.cuda.empty_cache()
+
 import multiprocessing
 import os
+#from qt_material import apply_stylesheet
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
+os.environ['CUDA_VISIBLE_DEVICES']='0'
 import time
 from functools import partial
 
@@ -12,7 +20,7 @@ from PyQt5.QtCore import Qt, QCoreApplication, QObject, pyqtSignal, pyqtSlot, QT
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QDesktopWidget, QWidget, QHBoxLayout, QApplication, \
     QTableWidgetItem, QLabel, QDialog, QProgressBar, QHeaderView, QMessageBox
-from cv2 import cv2
+import cv2
 from vtkmodules.all import *
 from vtkmodules.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
@@ -176,13 +184,16 @@ class ProgressBarWithText(QDialog):
             del self.thread_object
         self.close()
 
-
+"""冠状面"""
 class Example(QMainWindow, Ui_MainWindow):
 
     def __init__(self, parent=None):
         super(Example, self).__init__(parent)
-        # 左上,右上,右下,左下
-        self.lb1 = self.lb2 = self.lb3 = self.lb4 = None
+        """图"""
+        self.transverse = None # 左上 横断面
+        self.sagittal= None #右上 矢状面
+        self.coronal = None # 右下 冠状面
+        self.restruct_3d = None # 左下3维重建
         self.setupUi(self)
         self.registration_init()
         self.var_init()
@@ -243,14 +254,14 @@ class Example(QMainWindow, Ui_MainWindow):
         :param event: 事件
         """
         print('close')
-        if self.lb1 is not None:
-            self.lb1.Finalize()
-        if self.lb2 is not None:
-            self.lb2.Finalize()
-        if self.lb3 is not None:
-            self.lb3.Finalize()
-        if self.lb4 is not None:
-            self.lb4.Finalize()
+        if self.transverse is not None:
+            self.transverse.Finalize()
+        if self.sagittal is not None:
+            self.sagittal.Finalize()
+        if self.coronal is not None:
+            self.coronal.Finalize()
+        if self.restruct_3d is not None:
+            self.restruct_3d.Finalize()
         # 关闭所有子窗口
         for window in QApplication.topLevelWidgets():
             window.close()
@@ -334,25 +345,29 @@ class Example(QMainWindow, Ui_MainWindow):
     def vtk_init(self):
         """
         lb1是横断面
+        transverse 是横断面
         lb2是矢状面
+        sagittal 是矢状面
         lb3是冠状面
+        coronal 冠状面
+        restruct_3d 3维重建
         """
         """左上和右上"""
-        self.lb1 = QVTKRenderWindowInteractor(self.G1)
-        self.gridLayout_G1.addWidget(self.lb1, 1, 0, 1, 1)
-        self.lb2 = QVTKRenderWindowInteractor(self.G2)
-        self.gridLayout_G2.addWidget(self.lb2, 0, 0, 1, 1)
+        self.transverse = QVTKRenderWindowInteractor(self.G1)
+        self.gridLayout_G1.addWidget(self.transverse, 1, 0, 1, 1)
+        self.sagittal = QVTKRenderWindowInteractor(self.G2)
+        self.gridLayout_G2.addWidget(self.sagittal, 0, 0, 1, 1)
         """左下和右下"""
-        self.lb3 = QVTKRenderWindowInteractor(self.G3)
-        self.gridLayout_G3.addWidget(self.lb3, 0, 1, 1, 1)
-        self.lb4 = QVTKRenderWindowInteractor(self.G4)
-        self.gridLayout_G4.addWidget(self.lb4, 0, 0, 1, 1)
+        self.coronal = QVTKRenderWindowInteractor(self.G3)
+        self.gridLayout_G3.addWidget(self.coronal, 0, 1, 1, 1)
+        self.restruct_3d = QVTKRenderWindowInteractor(self.G4)
+        self.gridLayout_G4.addWidget(self.restruct_3d, 0, 0, 1, 1)
 
         """提前渲染出黑框"""
-        self.lb1.GetRenderWindow().GetInteractor().Start()
-        self.lb2.GetRenderWindow().GetInteractor().Start()
-        self.lb3.GetRenderWindow().GetInteractor().Start()
-        self.lb4.GetRenderWindow().GetInteractor().Start()
+        self.transverse.GetRenderWindow().GetInteractor().Start()
+        self.sagittal.GetRenderWindow().GetInteractor().Start()
+        self.coronal.GetRenderWindow().GetInteractor().Start()
+        self.restruct_3d.GetRenderWindow().GetInteractor().Start()
 
         # self.lb3.GetRenderWindow().AddRenderer(self.render_tobe)
 
@@ -407,7 +422,7 @@ class Example(QMainWindow, Ui_MainWindow):
         self.actionSave_Seg_File.triggered.connect(self.save_segment_file)
 
         self.actionModeling.triggered.connect(self.modeling)
-        self.actionSave_modeling.triggered.connect(self.save_model_file)
+        self.actionSave_modeling.triggered.connect(self.save_model_file)# 保存mesh
         self.actionContrast.triggered.connect(self.set_contrast)
         self.actionColorMap.triggered.connect(self.set_color_map)
 
@@ -521,9 +536,9 @@ class Example(QMainWindow, Ui_MainWindow):
         self.reader1 = None
         # self.image = normalize(temp)
 
-        self.vtk_pipeline_image(self.lb1, 0)
-        self.vtk_pipeline_image(self.lb2, 1)
-        self.vtk_pipeline_image(self.lb3, 2)
+        self.vtk_pipeline_image(self.transverse, 0)
+        self.vtk_pipeline_image(self.sagittal, 1)
+        self.vtk_pipeline_image(self.coronal, 2)
 
         spacing = self.main_image.GetSpacing()
         self.lineEdit_4.setText("%.6f" % spacing[0])
@@ -569,9 +584,9 @@ class Example(QMainWindow, Ui_MainWindow):
         if self.label_origin.shape == self.main_image_shape:
             self.label = self.label_origin
 
-            self.vtk_pipeline_label(self.lb1, 0)
-            self.vtk_pipeline_label(self.lb2, 1)
-            self.vtk_pipeline_label(self.lb3, 2)
+            self.vtk_pipeline_label(self.transverse, 0)
+            self.vtk_pipeline_label(self.sagittal, 1)
+            self.vtk_pipeline_label(self.coronal, 2)
 
 
     def update_spacing(self):
@@ -789,12 +804,12 @@ class Example(QMainWindow, Ui_MainWindow):
                     actor_selected.VisibilityOn()
                 self.horizontalSlider.setValue(round(actor_selected.GetProperty().GetOpacity() * 10))
                 self.lineEdit.setText(str(actor_selected.GetProperty().GetOpacity()))
-                renwin = self.lb4.GetRenderWindow()
+                renwin = self.restruct_3d.GetRenderWindow()
                 renwin.Render()
             elif it2 == 3:
                 if assembly is not None:
                     assembly.RemovePart(actor_selected)
-                    renwin = self.lb4.GetRenderWindow()
+                    renwin = self.restruct_3d.GetRenderWindow()
                     renwin.Render()
                     self.tableView.removeRow(it)
                     self.num_models -= 1
@@ -1050,7 +1065,7 @@ class Example(QMainWindow, Ui_MainWindow):
         origin = self.main_image.GetOrigin()
         self.img_center[0] = origin[0] + spacing[0] * (self.verticalScrollBar_2.value() - 1)
         self.scroll_bar_value_change(1)
-        renwin = self.lb2.GetRenderWindow()
+        renwin = self.sagittal.GetRenderWindow()
         self.slice_change_helper(renwin, 1)
 
     def change_corn(self):
@@ -1063,7 +1078,7 @@ class Example(QMainWindow, Ui_MainWindow):
         origin = self.main_image.GetOrigin()
         self.img_center[1] = origin[1] + spacing[1] * (self.verticalScrollBar_3.value() - 1)
         self.scroll_bar_value_change(2)
-        renwin = self.lb3.GetRenderWindow()
+        renwin = self.coronal.GetRenderWindow()
         self.slice_change_helper(renwin, 2)
 
     def change_axial(self):
@@ -1076,16 +1091,16 @@ class Example(QMainWindow, Ui_MainWindow):
         origin = self.main_image.GetOrigin()
         self.img_center[2] = origin[2] + spacing[2] * (self.verticalScrollBar.value() - 1)
         self.scroll_bar_value_change(0)
-        renwin = self.lb1.GetRenderWindow()
+        renwin = self.transverse.GetRenderWindow()
         self.slice_change_helper(renwin, 0)
 
     def update_all_windows(self):
         """
         更新所有窗口
         """
-        self.slice_change_helper(self.lb1.GetRenderWindow(), 0)
-        self.slice_change_helper(self.lb2.GetRenderWindow(), 1)
-        self.slice_change_helper(self.lb3.GetRenderWindow(), 2)
+        self.slice_change_helper(self.transverse.GetRenderWindow(), 0)
+        self.slice_change_helper(self.sagittal.GetRenderWindow(), 1)
+        self.slice_change_helper(self.coronal.GetRenderWindow(), 2)
 
     def set_window_level(self, window, level):
         """
@@ -1131,7 +1146,7 @@ class Example(QMainWindow, Ui_MainWindow):
         """
         清空三维重建的框
         """
-        renwin = self.lb4.GetRenderWindow()
+        renwin = self.restruct_3d.GetRenderWindow()
         renders = renwin.GetRenderers()
         renders.InitTraversal()
         for i in range(renders.GetNumberOfItems()):
@@ -1232,7 +1247,7 @@ class Example(QMainWindow, Ui_MainWindow):
             # self.clean_layout()
             reader2d = ReadImage(main_file)
             if reader2d:
-                self.vtk_pipeline_image2d(self.lb1, reader2d)
+                self.vtk_pipeline_image2d(self.transverse, reader2d)
             else:
                 temp_main_image = read_img(main_file)  # (x,y,z),(S,C,A)
                 if temp_main_image is None:
@@ -1286,9 +1301,9 @@ class Example(QMainWindow, Ui_MainWindow):
                 self.image = temp
                 # self.image = normalize(temp)
 
-                self.vtk_pipeline_image(self.lb1, 0)
-                self.vtk_pipeline_image(self.lb2, 1)
-                self.vtk_pipeline_image(self.lb3, 2)
+                self.vtk_pipeline_image(self.transverse, 0)
+                self.vtk_pipeline_image(self.sagittal, 1)
+                self.vtk_pipeline_image(self.coronal, 2)
 
                 spacing = self.main_image.GetSpacing()
                 self.lineEdit_4.setText("%.6f"%spacing[0])
@@ -1652,7 +1667,7 @@ class Example(QMainWindow, Ui_MainWindow):
         # progress_bar_dialog = ProgressBar(parent=self, func=self.get_Isosurface_helper)
         # progress_bar_dialog.exec()
 
-        renwin = self.lb4.GetRenderWindow()
+        renwin = self.restruct_3d.GetRenderWindow()
         renders = renwin.GetRenderers()
         renders.InitTraversal()
         for i in range(renders.GetNumberOfItems()):
@@ -1721,7 +1736,7 @@ class Example(QMainWindow, Ui_MainWindow):
         """
         if not self.set_style:
             try:
-                iren = self.lb4.GetRenderWindow().GetInteractor()
+                iren = self.restruct_3d.GetRenderWindow().GetInteractor()
                 iren.SetInteractorStyle(vtkInteractorStyleJoystickActor())
             except:
                 pass
@@ -1829,9 +1844,9 @@ class Example(QMainWindow, Ui_MainWindow):
             if self.label_origin.shape == self.main_image_shape:
                 self.label = self.label_origin
 
-                self.vtk_pipeline_label(self.lb1, 0)
-                self.vtk_pipeline_label(self.lb2, 1)
-                self.vtk_pipeline_label(self.lb3, 2)
+                self.vtk_pipeline_label(self.transverse, 0)
+                self.vtk_pipeline_label(self.sagittal, 1)
+                self.vtk_pipeline_label(self.coronal, 2)
 
                 self.seg_table_add_row(os.path.basename(label_file))
 
@@ -1990,9 +2005,9 @@ class Example(QMainWindow, Ui_MainWindow):
             self.verticalScrollBar_3.setValue(y / spacing[1])  # C(y)
             self.scroll_bar_value_change(2)
 
-            renwin1 = self.lb2.GetRenderWindow()
+            renwin1 = self.sagittal.GetRenderWindow()
             self.slice_change_helper(renwin1, 1)
-            renwin2 = self.lb3.GetRenderWindow()
+            renwin2 = self.coronal.GetRenderWindow()
             self.slice_change_helper(renwin2, 2)
         elif 1 == ori:
             new_center = self.img_center
@@ -2005,9 +2020,9 @@ class Example(QMainWindow, Ui_MainWindow):
             self.verticalScrollBar.setValue((dims[2] * spacing[1] - y) / spacing[1])  # A(z)
             self.scroll_bar_value_change(0)
 
-            renwin0 = self.lb1.GetRenderWindow()
+            renwin0 = self.transverse.GetRenderWindow()
             self.slice_change_helper(renwin0, 0)
-            renwin2 = self.lb3.GetRenderWindow()
+            renwin2 = self.coronal.GetRenderWindow()
             self.slice_change_helper(renwin2, 2)
         else:
             new_center = self.img_center
@@ -2020,9 +2035,9 @@ class Example(QMainWindow, Ui_MainWindow):
             self.verticalScrollBar.setValue((dims[2] * spacing[1] - y) / spacing[1])  # A(z)
             self.scroll_bar_value_change(0)
 
-            renwin0 = self.lb1.GetRenderWindow()
+            renwin0 = self.transverse.GetRenderWindow()
             self.slice_change_helper(renwin0, 0)
-            renwin2 = self.lb2.GetRenderWindow()
+            renwin2 = self.sagittal.GetRenderWindow()
             self.slice_change_helper(renwin2, 1)
 
     def rib_seg_pipeline(self, do_mirror=False, mixed_precision=True):
@@ -2051,9 +2066,9 @@ class Example(QMainWindow, Ui_MainWindow):
                 self.label_origin = sitk.GetArrayFromImage(self.label_main)
                 self.label = self.label_origin
 
-                self.vtk_pipeline_label(self.lb1, 0)
-                self.vtk_pipeline_label(self.lb2, 1)
-                self.vtk_pipeline_label(self.lb3, 2)
+                self.vtk_pipeline_label(self.transverse, 0)
+                self.vtk_pipeline_label(self.sagittal, 1)
+                self.vtk_pipeline_label(self.coronal, 2)
 
                 self.seg_table_add_row('rib.nii.gz')
         else:
@@ -2088,9 +2103,9 @@ class Example(QMainWindow, Ui_MainWindow):
                 self.label_origin = sitk.GetArrayFromImage(self.label_main)
                 self.label = self.label_origin
 
-                self.vtk_pipeline_label(self.lb1, 0)
-                self.vtk_pipeline_label(self.lb2, 1)
-                self.vtk_pipeline_label(self.lb3, 2)
+                self.vtk_pipeline_label(self.transverse, 0)
+                self.vtk_pipeline_label(self.sagittal, 1)
+                self.vtk_pipeline_label(self.coronal, 2)
 
                 self.seg_table_add_row('pelvic.nii.gz')
         else:
@@ -2125,9 +2140,9 @@ class Example(QMainWindow, Ui_MainWindow):
                 self.label_origin = sitk.GetArrayFromImage(self.label_main)
                 self.label = self.label_origin
 
-                self.vtk_pipeline_label(self.lb1, 0)
-                self.vtk_pipeline_label(self.lb2, 1)
-                self.vtk_pipeline_label(self.lb3, 2)
+                self.vtk_pipeline_label(self.transverse, 0)
+                self.vtk_pipeline_label(self.sagittal, 1)
+                self.vtk_pipeline_label(self.coronal, 2)
 
                 self.seg_table_add_row('pelvic.nii.gz')
         else:
@@ -2143,7 +2158,7 @@ class Example(QMainWindow, Ui_MainWindow):
         """
         if not self.set_style:
             try:
-                iren = self.lb4.GetRenderWindow().GetInteractor()
+                iren = self.restruct_3d.GetRenderWindow().GetInteractor()
                 iren.SetInteractorStyle(vtkInteractorStyleJoystickActor())
             except:
                 pass
@@ -2168,7 +2183,7 @@ class Example(QMainWindow, Ui_MainWindow):
 
             if files:
                 assembly = vtkAssembly()
-                renwin = self.lb4.GetRenderWindow()
+                renwin = self.restruct_3d.GetRenderWindow()
                 for i, file in enumerate(files):
                     polydata = ReadPolyData(file)
                     if not polydata:
@@ -2213,7 +2228,7 @@ class Example(QMainWindow, Ui_MainWindow):
         for index in sorted(indexes):
             print('Row %d is selected' % index.row())
 
-        iren = self.lb4.GetRenderWindow().GetInteractor()
+        iren = self.restruct_3d.GetRenderWindow().GetInteractor()
         if isinstance(iren.GetInteractorStyle(), vtkInteractorStyleJoystickCamera):
             style = vtkInteractorStyleJoystickActor()
             self.toolButton_3d.setIcon(QIcon('resources/brush_shape_square.png'))
@@ -2223,7 +2238,7 @@ class Example(QMainWindow, Ui_MainWindow):
         iren.SetInteractorStyle(style)
 
     def reset_3d(self):
-        renwin = self.lb4.GetRenderWindow()
+        renwin = self.restruct_3d.GetRenderWindow()
         renders = renwin.GetRenderers()
         renders.InitTraversal()
         for i in range(renders.GetNumberOfItems()):
@@ -2278,7 +2293,7 @@ class Example(QMainWindow, Ui_MainWindow):
                 print(actor_selected.GetProperty().GetOpacity())
                 print(value)
                 self.lineEdit.setText(str(value))
-                self.lb4.GetRenderWindow().Render()
+                self.restruct_3d.GetRenderWindow().Render()
         except:
             pass
 
@@ -2312,11 +2327,10 @@ class Example(QMainWindow, Ui_MainWindow):
         # lut.SetTableValue(3, 1, 0, 0, 1)
         return lut
 
-
 if __name__ == '__main__':
     multiprocessing.freeze_support()
     QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
     app = QApplication(sys.argv)
-    ex = Example()
-    ex.show()
+    window = Example()
+    window.show()
     sys.exit(app.exec_())

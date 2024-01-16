@@ -131,7 +131,7 @@ def seg_rib(img_path, do_tta=False, mixed_precision=False, save_path=None):
 if __name__ == '__main__':
     import time
 
-    path = os.path.join(base_dir, 'img/RibFrac101-image.nii.gz')
+    path = os.path.join(base_dir, 'reource/RibFrac101-image.nii.gz')
     begin = time.perf_counter()
     seg_rib(path)
     cost = time.perf_counter() - begin

@@ -6,114 +6,367 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>644</width>
-    <height>537</height>
+    <width>650</width>
+    <height>547</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Segmentation Label Editor</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:#3c3f41;
-color: #f2f2f2;</string>
+   <string notr="true">
+/*------------------------------------全局样式-----------------------------------------*/
+QWidget{font: 12px;color:#DCDCDC;font-family:'微软雅黑';}
+QFrame{border-radius:5px;}
+/*QScrollBar*/
+QScrollArea{border:none}
+QScrollBar{border:none;background:transparent;}
+QScrollBar::add-page,QScrollBar::sub-page{background:transparent;}
+QScrollBar::add-line,QScrollBar::sub-line { background: none; }
+QScrollBar::handle{ background:rgba(91, 100, 116, 0.5); border-radius: 3px; width:3px}
+QScrollBar:vertical{width:7px;padding-left:2px;padding-right:2px;}
+QScrollBar:horizontal{height:7px;padding-top:2px;padding-bottom:2px;}
+
+/*QTabWidget*/
+QTabWidget::pane{border:1px solid #1b1b1b;background:#1b1b1b;}
+
+QTabBar::tab{		
+	width:84px;					
+	height:25;
+	font: 16px;
+	color:#DCDCDC; 					
+	margin-top:0px; 			
+	margin-right:5px;
+	margin-left:5px;
+	background:#1b1b1b;
+
+}
+
+QTabBar::tab:first:!selected {
+
+	/*border-image: url(:/common/images/common/左_normal.png);*/
+}
+QTabBar::tab:selected {
+	color:#2764c1; 	
+	border:2px solid;
+	border-top:0px;
+	border-right:0px;
+	border-left:0px;
+	border-bottom-color:#2764c1;
+}
+QTabWidget::tab-bar {
+alignment: left;
+} 
+/*QTabWidget::pane{background:transparent;}*/
+/*QStackedWidget*/
+
+/*QToolButton*/
+QToolButton
+{background:rgba(0,0,0,0); }
+QToolButton:hover
+{border:1px solid;border-top:0px;border-right:0px;border-left:0px;border-bottom-color:#2764c1;background:rgba(151,151,151,0.05);}
+/*QPushButton*/
+QPushButton
+{background:#5E5E5E;border-radius:5px; }
+QPushButton:hover
+{border:1px solid #2764c1;}
+/*QMenu*/
+QMenu {
+    background-color:qlineargradient(spread:pad,x1:0, y1:0, x2:0, y2:1,stop:0.7 #1a1d23,stop:1 #1a1d23);
+	border:1px solid #282c34;
+	border-radius:8px;
+	padding-left:2px;
+}
+QMenu::item {
+    font-size:8pt;
+    color: #DCDCDC;
+    background-color:transparent;;
+    padding-right: 2px;
+    margin: 2px 1px;
+}
+QMenu::item:selected {
+    border:1px ridge #259bd9;
+	border-radius:2px;
+}
+QMenu::icon:checked {
+    background:#259bd9;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+    left: 1px;
+}
+QMenu::icon:checked:selected {
+    background-color : #259bd9;
+    background-image: url(:/space_selected.png);
+}
+QListWidget
+{
+	background-color:transparent;   
+	font-size:12px;
+    color: #f2f2f2;
+}
+/*
+tabelwidget*/
+QTableWidget,QTableView{
+color:#DCDCDC;
+background-color:qlineargradient(spread:pad,x1:0, y1:0, x2:0, y2:1,stop:0 #232323,stop:1 #121212 );
+border:1px solid #242424;
+}
+QTableWidget::Item,QTableView::Item{border:0px solid rgb(255,0,0);border-bottom:1px solid #242424;}
+
+/*选中item*/
+QTableWidget::item:selected,QTableView::item:selected{
+color:#DCDCDC;
+background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #484848,stop:1 #383838);
+}
+
+/*
+悬浮item*/
+QTableWidget::item:hover{
+background:rgba(0,0,0,0);
+}
+/*表头*/
+QHeaderView::section{
+text-align:center;
+background:#5E5E5E;
+padding:3px;
+margin:0px;
+color:#DCDCDC;
+border:1px solid #242424;
+border-left-width:0;
+}
+/*QLineEdit*/
+QLineEdit {
+	border: 1px solid #A0A0A0; /* 边框宽度为1px，颜色为#A0A0A0 */
+	border-radius: 3px; /* 边框圆角 */
+	padding-left: 5px; /* 文本距离左边界有5px */
+	background-color: transparent; /* 背景颜色 */
+	color: #DCDCDC; /* 文本颜色 */
+	selection-background-color: #A0A0A0; /* 选中文本的背景颜色 */
+	selection-color: #F2F2F2; /* 选中文本的颜色 */
+	font-family: &quot;Microsoft YaHei&quot;; /* 文本字体族 */
+	font-size: 10pt; /* 文本字体大小 */
+}
+
+/*horizontal ：水平QSlider*/
+QSlider::groove:horizontal {
+border: 0px solid #bbb;
+}
+
+/*1.滑动过的槽设计参数*/
+QSlider::sub-page:horizontal {
+ /*槽颜色*/
+background: #2764c1;
+ /*外环区域倒圆角度*/
+border-radius: 2px;
+ /*上遮住区域高度*/
+margin-top:8px;
+ /*下遮住区域高度*/
+margin-bottom:8px;
+/*width在这里无效，不写即可*/
+}
+
+/*2.未滑动过的槽设计参数*/
+QSlider::add-page:horizontal {
+/*槽颜色*/
+background: #5E5E5E;
+/*外环大小0px就是不显示，默认也是0*/
+border: 0px solid #777;
+/*外环区域倒圆角度*/
+border-radius: 2px;
+ /*上遮住区域高度*/
+margin-top:9px;
+ /*下遮住区域高度*/
+margin-bottom:9px;
+}
+ 
+/*3.平时滑动的滑块设计参数*/
+QSlider::handle:horizontal {
+/*滑块颜色*/
+background: rgb(193,204,208);
+/*滑块的宽度*/
+width: 5px;
+/*滑块外环为1px，再加颜色*/
+border: 1px solid rgb(193,204,208);
+ /*滑块外环倒圆角度*/
+border-radius: 2px; 
+ /*上遮住区域高度*/
+margin-top:6px;
+ /*下遮住区域高度*/
+margin-bottom:6px;
+}
+
+/*4.手动拉动时显示的滑块设计参数*/
+QSlider::handle:horizontal:hover {
+/*滑块颜色*/
+background: rgb(193,204,208);
+/*滑块的宽度*/
+width: 10px;
+/*滑块外环为1px，再加颜色*/
+border: 1px solid rgb(193,204,208);
+ /*滑块外环倒圆角度*/
+border-radius: 5px; 
+ /*上遮住区域高度*/
+margin-top:4px;
+ /*下遮住区域高度*/
+margin-bottom:4px;
+}
+/*QGroupBox*/
+QGroupBox {
+    /* 背景渐变色*/
+    background-color:qlineargradient(spread:pad,x1:0, y1:0, x2:0, y2:1,stop:0 #232323,stop:1 #121212 );
+    /* 边框 */
+    border: 1px solid #5E5E5E;
+
+    /* 倒角 */
+    border-radius: 5px;
+padding: -16 6px 0 6px;
+
+    /* 就像墙上挂着的两个相框,margin指的是相框与相框的距离
+       padding指的是每个相框里照片与相框边框的距离*/
+    margin-top: 8px; 
+}
+/* 标题设置 */
+QGroupBox::title {
+    /* 位置 */
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+	left:10px; /* //线的偏离度 */
+	margin-left: 0px;
+	padding:0 1px;/* //文字在方框中位置的偏离度 */
+    /* 内边框,上下和左右
+    /* padding: 30px 15px; */
+
+    /* 颜色 
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #FF0ECE, stop: 1 #FFFFFF);*/
+}
+
+QSplitter::handle {
+	/*image:url(:/images/444.bmp);*/
+	border-radius: 3px;
+}
+QSplitter::handle:hover {
+	/*image:url(:/images/444.bmp);*/
+	background-color:rgba(70,130,180,0.3);
+	border-radius: 3px;
+}
+
+QSplitter::handle:horizontal {
+	
+	width:5px;
+}
+
+QSplitter::handle:vertical {
+	
+	width:5px;
+}
+
+QSplitter::handle:pressed {
+	
+	background-color:rgba(70,130,180,0.1);
+ 	border-radius: 3px;
+}
+QSpinBox {
+    padding-top: 2px;
+    padding-bottom: 2px;
+	padding-left: 4px;
+    padding-right: 15px;
+    border: 1px solid rgb(64,64,64);
+    border-radius: 3px;
+	color: rgb(200,200,200);
+    background-color: rgb(44,44,44);
+	selection-color: rgb(235,235,235);
+	selection-background-color: rgb(83,121,180);
+	font-family: &quot;Microsoft Yahei&quot;;
+	font-size: 10pt;
+}
+
+QSpinBox:hover {
+    background-color: rgb(59,59,59);
+}
+
+QSpinBox::up-button { /* 向上按钮 */
+	subcontrol-origin: border; /* 起始位置 */
+	subcontrol-position: top right; /* 居于右上角 */
+	border: none;
+	width: 12px;
+	margin-top: 2px;
+	margin-right: 1px;
+	margin-bottom: 0px;
+}
+
+QSpinBox::up-button:hover {
+	border: none;
+}
+
+QSpinBox::up-arrow { /* 向上箭头，图片大小为8x8 */
+	image: url(resources/btn_spin_up.png);
+}
+
+QSpinBox::up-arrow:hover {
+	image: url(resources/btn_spin_up_hover.png);
+}
+
+QSpinBox::up-arrow:disabled, QSpinBox::up-arrow:off {
+	image: url(resources/btn_spin_up_disable.png);
+}
+
+QSpinBox::down-button { /* 向下按钮 */
+	subcontrol-origin: border;
+	subcontrol-position: bottom right;
+	border: none;
+	width: 12px;
+	margin-top: 0px;
+	margin-right: 1px;
+	margin-bottom: 2px;
+}
+
+QSpinBox::down-button:hover {
+	border: none;
+}
+
+QSpinBox::down-arrow { /* 向下箭头 */
+	image: url(resources/btn_spin_down.png);
+}
+
+QSpinBox::down-arrow:hover {
+	image: url(resources/btn_spin_down_hover.png);
+}
+
+QSpinBox::down-arrow:disabled, QSpinBox::down-arrow:off {
+	image: url(resources/btn_spin_down_disable.png);
+}
+/*--------------------------------------特征样式---------------------------------------*/
+
+#widget{background-color:qlineargradient(spread:pad,x1:0, y1:0, x2:0, y2:1,stop:0.7 #232323,stop:1 #121212 );border-radius:5px;}
+#btnLabelColor{background:rgba(151,151,151,0.1);border:7px solid;border-top:0px;border-right:0px;border-left:0px;border-bottom-color:#2764c1;}
+</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <property name="spacing">
+    <number>0</number>
+   </property>
    <property name="leftMargin">
-    <number>6</number>
+    <number>0</number>
    </property>
    <property name="topMargin">
-    <number>24</number>
+    <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>6</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>6</number>
+    <number>0</number>
    </property>
-   <property name="horizontalSpacing">
-    <number>8</number>
-   </property>
-   <property name="verticalSpacing">
-    <number>16</number>
-   </property>
-   <item row="1" column="0" colspan="3">
+   <item>
     <widget class="QWidget" name="widget" native="true">
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <property name="spacing">
-       <number>8</number>
-      </property>
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item>
-       <widget class="QPushButton" name="btnNew">
-        <property name="text">
-         <string>New</string>
-        </property>
-        <property name="autoDefault">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btnDelete">
-        <property name="text">
-         <string>Delete</string>
-        </property>
-        <property name="autoDefault">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btnActions">
-        <property name="text">
-         <string>Actions...</string>
-        </property>
-        <property name="autoDefault">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btnClose">
-        <property name="text">
-         <string>Close</string>
-        </property>
-        <property name="autoDefault">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="0" column="2">
-    <widget class="QGroupBox" name="grpSelectedLabel">
-     <property name="styleSheet">
-      <string notr="true">QGroupBox {
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QGroupBox" name="groupBox_3">
+        <property name="styleSheet">
+         <string notr="true">QGroupBox {
   background-origin: content;
   margin-top: 15px;
   font-weight: bold;
@@ -126,266 +379,363 @@ QGroupBox::title {
   subcontrol-origin: 	margin;
   subcontrol-position: top left;
 }</string>
-     </property>
-     <property name="title">
-      <string>Selected Label</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <property name="spacing">
-       <number>4</number>
-      </property>
-      <property name="leftMargin">
-       <number>6</number>
-      </property>
-      <property name="topMargin">
-       <number>6</number>
-      </property>
-      <property name="rightMargin">
-       <number>6</number>
-      </property>
-      <property name="bottomMargin">
-       <number>6</number>
-      </property>
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Description:</string>
         </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="inLabelDescription"/>
-      </item>
-      <item>
-       <spacer name="verticalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
+        <property name="title">
+         <string>可用的标签</string>
         </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>10</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QWidget" name="widget_2" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <layout class="QVBoxLayout" name="verticalLayout">
          <property name="leftMargin">
-          <number>0</number>
+          <number>4</number>
          </property>
          <property name="topMargin">
-          <number>0</number>
+          <number>4</number>
          </property>
          <property name="rightMargin">
-          <number>0</number>
+          <number>3</number>
          </property>
          <property name="bottomMargin">
-          <number>0</number>
+          <number>4</number>
          </property>
          <item>
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>Color:</string>
+          <widget class="QTableView" name="lvLabels">
+           <property name="styleSheet">
+            <string notr="true">font-size:12px;</string>
            </property>
+           <property name="autoScrollMargin">
+            <number>16</number>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="dragDropMode">
+            <enum>QAbstractItemView::NoDragDrop</enum>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>false</bool>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+           <property name="showGrid">
+            <bool>true</bool>
+           </property>
+           <property name="cornerButtonEnabled">
+            <bool>false</bool>
+           </property>
+           <attribute name="horizontalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
+           <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+           </attribute>
           </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
          </item>
         </layout>
        </widget>
       </item>
-      <item>
-       <widget class="QWidget" name="widget_6" native="true">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>100</height>
-         </size>
+      <item row="0" column="1">
+       <widget class="QGroupBox" name="grpSelectedLabel">
+        <property name="styleSheet">
+         <string notr="true">QGroupBox {
+  background-origin: content;
+  margin-top: 15px;
+  font-weight: bold;
+  font-size: 12px;
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid rgb(130,130,130);
+}
+QGroupBox::title {
+  subcontrol-origin: 	margin;
+  subcontrol-position: top left;
+}</string>
         </property>
-        <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,0,0,0,0">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
+        <property name="title">
+         <string>选择的标签</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
          <property name="spacing">
           <number>4</number>
          </property>
-         <item row="1" column="3" colspan="2">
-          <widget class="QSpinBox" name="inGreen">
-           <property name="maximumSize">
-            <size>
-             <width>56</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="maximum">
-            <number>255</number>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2">
-          <widget class="QLabel" name="label_8">
+         <property name="leftMargin">
+          <number>6</number>
+         </property>
+         <property name="topMargin">
+          <number>6</number>
+         </property>
+         <property name="rightMargin">
+          <number>6</number>
+         </property>
+         <property name="bottomMargin">
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label">
            <property name="text">
-            <string>B:</string>
+            <string>描述</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="3">
-          <widget class="QSpinBox" name="inBlue">
-           <property name="maximumSize">
-            <size>
-             <width>56</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="maximum">
-            <number>255</number>
-           </property>
-          </widget>
+         <item>
+          <widget class="QLineEdit" name="inLabelDescription"/>
          </item>
-         <item row="0" column="3" colspan="2">
-          <widget class="QSpinBox" name="inRed">
-           <property name="maximumSize">
-            <size>
-             <width>56</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="maximum">
-            <number>255</number>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QLabel" name="label_6">
-           <property name="text">
-            <string>R:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QLabel" name="label_7">
-           <property name="text">
-            <string>G:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <spacer name="horizontalSpacer_4">
+         <item>
+          <spacer name="verticalSpacer_2">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Vertical</enum>
            </property>
            <property name="sizeType">
             <enum>QSizePolicy::Fixed</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>5</width>
-             <height>20</height>
+             <width>20</width>
+             <height>10</height>
             </size>
            </property>
           </spacer>
          </item>
-         <item row="0" column="0" rowspan="4">
-          <widget class="QWidget" name="inColorWheel" native="true">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
+         <item>
+          <widget class="QWidget" name="widget_2" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>颜色</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="widget_6" native="true">
            <property name="minimumSize">
             <size>
-             <width>120</width>
-             <height>120</height>
+             <width>0</width>
+             <height>100</height>
             </size>
            </property>
-           <property name="maximumSize">
+           <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,0,0,0,0">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <property name="spacing">
+             <number>4</number>
+            </property>
+            <item row="1" column="3" colspan="2">
+             <widget class="QSpinBox" name="inGreen">
+              <property name="minimumSize">
+               <size>
+                <width>90</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>56</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>B:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="3">
+             <widget class="QSpinBox" name="inBlue">
+              <property name="minimumSize">
+               <size>
+                <width>90</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>56</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3" colspan="2">
+             <widget class="QSpinBox" name="inRed">
+              <property name="minimumSize">
+               <size>
+                <width>90</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>56</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>R:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>G:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <spacer name="horizontalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>5</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="0" column="0" rowspan="4">
+             <widget class="QWidget" name="inColorWheel" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>120</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>120</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(0, 0, 0);</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="2" colspan="3">
+             <widget class="QToolButton" name="btnLabelColor">
+              <property name="minimumSize">
+               <size>
+                <width>123</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>选择颜色</string>
+              </property>
+              <property name="toolButtonStyle">
+               <enum>Qt::ToolButtonTextBesideIcon</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
             <size>
-             <width>120</width>
-             <height>120</height>
+             <width>20</width>
+             <height>10</height>
             </size>
            </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QWidget" name="widget_3" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox_2">
            <property name="styleSheet">
-            <string notr="true">background-color: rgb(0, 0, 0);</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="2" colspan="2">
-          <widget class="QToolButton" name="btnLabelColor">
-           <property name="text">
-            <string>Choose...</string>
-           </property>
-           <property name="toolButtonStyle">
-            <enum>Qt::ToolButtonTextBesideIcon</enum>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <spacer name="verticalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>10</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QWidget" name="widget_3" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="groupBox_2">
-        <property name="styleSheet">
-         <string notr="true">QGroupBox {
+            <string notr="true">QGroupBox {
   background-origin: content;
   margin-top: 15px;
   font-weight: normal;
@@ -402,26 +752,11 @@ QGroupBox::title {
   subcontrol-origin: 	margin;
   subcontrol-position: top left;
 }</string>
-        </property>
-        <property name="title">
-         <string>Advanced Options:</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_6">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QWidget" name="widget_4" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
+           </property>
+           <property name="title">
+            <string>高级选项</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
             <property name="leftMargin">
              <number>0</number>
             </property>
@@ -435,131 +770,177 @@ QGroupBox::title {
              <number>0</number>
             </property>
             <item>
-             <spacer name="horizontalSpacer_3">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_4">
-              <property name="text">
-               <string>Numeric value:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSpinBox" name="inLabelId">
-              <property name="minimumSize">
-               <size>
-                <width>64</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>The value that this label has in the segmentation image. If you change this value, voxels that have this value in the segmentation image will be changed to the new value.</string>
-              </property>
-              <property name="readOnly">
-               <bool>false</bool>
-              </property>
-              <property name="buttonSymbols">
-               <enum>QAbstractSpinBox::NoButtons</enum>
-              </property>
+             <widget class="QWidget" name="widget_4" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_4">
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <spacer name="horizontalSpacer_3">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_4">
+                 <property name="text">
+                  <string>数值</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="inLabelId">
+                 <property name="minimumSize">
+                  <size>
+                   <width>80</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>The value that this label has in the segmentation image. If you change this value, voxels that have this value in the segmentation image will be changed to the new value.</string>
+                 </property>
+                 <property name="readOnly">
+                  <bool>false</bool>
+                 </property>
+                 <property name="buttonSymbols">
+                  <enum>QAbstractSpinBox::NoButtons</enum>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
            </layout>
           </widget>
          </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>5</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
         </layout>
        </widget>
       </item>
-      <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>5</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QGroupBox" name="groupBox_3">
-     <property name="styleSheet">
-      <string notr="true">QGroupBox {
-  background-origin: content;
-  margin-top: 15px;
-  font-weight: bold;
-  font-size: 12px;
-  padding: 5px;
-  border-radius: 4px;
-  border: 1px solid rgb(130,130,130);
-}
-QGroupBox::title {
-  subcontrol-origin: 	margin;
-  subcontrol-position: top left;
-}</string>
-     </property>
-     <property name="title">
-      <string>Available Labels:</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="leftMargin">
-       <number>4</number>
-      </property>
-      <property name="topMargin">
-       <number>4</number>
-      </property>
-      <property name="rightMargin">
-       <number>3</number>
-      </property>
-      <property name="bottomMargin">
-       <number>4</number>
-      </property>
-      <item>
-       <widget class="QTableView" name="lvLabels">
-        <property name="styleSheet">
-         <string notr="true">font-size:12px;</string>
-        </property>
-        <property name="editTriggers">
-         <set>QAbstractItemView::NoEditTriggers</set>
-        </property>
-        <property name="dragDropMode">
-         <enum>QAbstractItemView::NoDragDrop</enum>
-        </property>
-        <property name="selectionMode">
-         <enum>QAbstractItemView::SingleSelection</enum>
-        </property>
-        <property name="selectionBehavior">
-         <enum>QAbstractItemView::SelectRows</enum>
-        </property>
-        <attribute name="horizontalHeaderVisible">
-         <bool>false</bool>
-        </attribute>
-        <attribute name="horizontalHeaderDefaultSectionSize">
-         <number>60</number>
-        </attribute>
-        <attribute name="horizontalHeaderStretchLastSection">
-         <bool>true</bool>
-        </attribute>
-        <attribute name="verticalHeaderVisible">
-         <bool>false</bool>
-        </attribute>
-        <attribute name="verticalHeaderDefaultSectionSize">
-         <number>25</number>
-        </attribute>
+      <item row="1" column="0" colspan="2">
+       <widget class="QWidget" name="widget5" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="spacing">
+          <number>8</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="btnNew">
+           <property name="minimumSize">
+            <size>
+             <width>70</width>
+             <height>28</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>新建</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnDelete">
+           <property name="minimumSize">
+            <size>
+             <width>70</width>
+             <height>28</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>删除</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnActions">
+           <property name="minimumSize">
+            <size>
+             <width>70</width>
+             <height>28</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>高级</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnClose">
+           <property name="minimumSize">
+            <size>
+             <width>70</width>
+             <height>28</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>关闭</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>

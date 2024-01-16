@@ -4,7 +4,8 @@ import os
 import sys
 
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QDesktopWidget, QWidget, QMessageBox
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication, QDesktopWidget, QDialog, QMessageBox
 
 from contrast import Ui_Widget
 from util import get_base_dir
@@ -12,14 +13,17 @@ from util import get_base_dir
 base_dir = get_base_dir()
 
 
-class ContrastWindow(QWidget, Ui_Widget):
-    def __init__(self, minimum, maximum, window, level, callback):
-        super(ContrastWindow, self).__init__()
+class ContrastWindow(QDialog, Ui_Widget):
+    def __init__(self, parent ,minimum, maximum, window, level, callback):
+        super(ContrastWindow, self).__init__(parent)
         self.callback = callback
         self.setupUi(self)
         self.center()
-        self.setWindowTitle('Contrast')
-        self.setWindowIcon(QIcon(os.path.join(base_dir, 'resources', 'HQU_logo1.png')))
+        self.setWindowModality(Qt.WindowModal)
+        self.setAttribute(Qt.WA_QuitOnClose, True)
+        self.setAttribute(Qt.WA_TranslucentBackground)
+        self.setWindowFlags(Qt.FramelessWindowHint | Qt.Dialog)
+        self.setParent(parent)
         self.minimum = minimum
         self.maximum = maximum
         self.level_spinBox.setMinimum(minimum)
@@ -31,6 +35,7 @@ class ContrastWindow(QWidget, Ui_Widget):
         self.apply_pushButton.clicked.connect(self.apply_event)
         self.ok_pushButton.clicked.connect(self.ok_event)
         self.reset_pushButton.clicked.connect(self.reset_event)
+        self.toolButton_close.clicked.connect(self.close)
 
     def closeEvent(self, event):
         """

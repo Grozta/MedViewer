@@ -1,0 +1,3 @@
+pylupdate5 mainwindow.py contrast_window.py LabelEditorDialog_window.py LabelEditorDialog.py contrast.py MessageBox.py ui_MessageBox.py VTKWindow.py ui_main_window.py ui_VTKWindow.py ImgWidget1.py LabelColor.py -ts zh_CN.ts
+
+ pylupdate5 mainwindow.py contrast_window.py LabelEditorDialog_window.py LabelEditorDialog.py contrast.py MessageBox.py ImgWidget1.py LabelColor.py -ts zh_CN.ts

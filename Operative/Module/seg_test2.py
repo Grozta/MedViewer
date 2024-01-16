@@ -7,7 +7,7 @@ import numpy as np
 import torch
 from albumentations import (Normalize, Compose)
 from albumentations.pytorch.transforms import img_to_tensor
-from cv2 import cv2
+import cv2
 from tqdm import tqdm
 
 from Operative.Module.draw_labels import mark as draw_labels_mark

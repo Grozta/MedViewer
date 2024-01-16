@@ -6,7 +6,7 @@ import sys
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QIcon
-from PyQt5.QtWidgets import QApplication, QDesktopWidget, QWidget, QColorDialog, QMessageBox, QMenu, QAction, \
+from PyQt5.QtWidgets import QApplication, QDesktopWidget, QDialog, QColorDialog, QMessageBox, QMenu, QAction, \
     QFileDialog
 
 from LabelColor import LabelColor
@@ -16,18 +16,23 @@ from util import CreateColorBoxIcon, get_base_dir
 base_dir = get_base_dir()
 
 
-class LabelEditorDialogWindow(QWidget, Ui_LabelEditorDialog):
+class LabelEditorDialogWindow(QDialog, Ui_LabelEditorDialog):
     # TODO 排序列表的值
-    def __init__(self, call_back=None):
-        super(LabelEditorDialogWindow, self).__init__()
+    def __init__(self,parent, call_back=None):
+        super(LabelEditorDialogWindow, self).__init__(parent)
         self.call_back = call_back
+        self.setParent(parent)
         self.setupUi(self)
         self.center()
-        self.setWindowTitle('Label Color')
-        self.setWindowIcon(QIcon(os.path.join(base_dir, 'resources', 'HQU_logo1.png')))
+        self.setWindowModality(Qt.WindowModal)
+        self.setAttribute(Qt.WA_QuitOnClose, True)
+        self.setAttribute(Qt.WA_TranslucentBackground)
+        self.setWindowFlags(Qt.FramelessWindowHint | Qt.Dialog)
         self.model = QStandardItemModel()
         self.lvLabels.setModel(self.model)
         self.lvLabels.clicked.connect(self.table_click)
+        self.lvLabels.setColumnWidth(0, 89)
+        self.lvLabels.setColumnWidth(1, 200)
         self.init()
         self.inRed.valueChanged.connect(self.red_change)
         self.inGreen.valueChanged.connect(self.green_change)
@@ -40,9 +45,11 @@ class LabelEditorDialogWindow(QWidget, Ui_LabelEditorDialog):
         self.btnDelete.clicked.connect(self.delete_btn_click)
 
         menu = QMenu(self)
-        self.actionImportLabel = QAction('import label description...', self)
+        menu.setTearOffEnabled(False)
+        menu.setLayoutDirection(Qt.LayoutDirection.LayoutDirectionAuto)
+        self.actionImportLabel = QAction(self.tr('导入标签描述'), self)
         self.actionImportLabel.triggered.connect(self.import_label_click)
-        self.actionExportLabel = QAction('export label description...', self)
+        self.actionExportLabel = QAction(self.tr('导出标签描述'), self)
         self.actionExportLabel.triggered.connect(self.export_label_click)
         menu.addAction(self.actionImportLabel)
         menu.addAction(self.actionExportLabel)
@@ -66,7 +73,7 @@ class LabelEditorDialogWindow(QWidget, Ui_LabelEditorDialog):
         """
         导入标签
         """
-        path = QFileDialog.getOpenFileName(self, 'Load Label Descriptions', '~', "Text Files (*.txt)")[0]
+        path = QFileDialog.getOpenFileName(self, self.tr('导入标签描述'), '~', "Text Files (*.txt)")[0]
         if path != '':
             self.model.clear()
             LabelColor.read_file(path)
@@ -76,7 +83,7 @@ class LabelEditorDialogWindow(QWidget, Ui_LabelEditorDialog):
         """
         导出标签
         """
-        path = QFileDialog.getSaveFileName(self, 'Save Label Descriptions', '~', "Text Files (*.txt)")[0]
+        path = QFileDialog.getSaveFileName(self, self.tr('导出标签描述'), '~', "Text Files (*.txt)")[0]
         print(path)
         if path != '':
             os.makedirs(os.path.dirname(path), exist_ok=True)

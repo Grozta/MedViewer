@@ -9,7 +9,7 @@ import numpy as np
 import vtkmodules.all as vtk
 from PyQt5.QtCore import QRect
 from PyQt5.QtGui import QImage, QPixmap, QPainter, QColor, QIcon
-from cv2 import cv2
+import cv2
 
 
 def get_base_dir():
