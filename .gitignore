@@ -18,7 +18,6 @@ val
 *.pth
 *.pkl
 predict_label
-classification
 img
 models/nnUNet/nnUNetTrainerV2__nnUNetPlansv2.1
 ddd3
