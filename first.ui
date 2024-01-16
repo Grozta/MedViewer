@@ -1,0 +1,810 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1350</width>
+    <height>869</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>16777215</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:#3c3f41;
+color: #f2f2f2;</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>16777215</height>
+    </size>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QWidget" name="widget" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="title">
+          <string>Edit</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Segmentation File</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="seg_tableWidget">
+            <property name="styleSheet">
+             <string notr="true">QHeaderView::section{background-color:#3c3f41;color: #f2f2f2;};</string>
+            </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
+            </property>
+            <column>
+             <property name="text">
+              <string>Name</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Watch</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Delete</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>3D Model File</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="tableView">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>100</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QHeaderView::section{background-color:#3c3f41;color: #f2f2f2;};</string>
+            </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
+            </property>
+            <property name="columnCount">
+             <number>4</number>
+            </property>
+            <column>
+             <property name="text">
+              <string>Name</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Watch</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Color</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Delete</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Model Opacity</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="QSlider" name="horizontalSlider">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit">
+              <property name="maximumSize">
+               <size>
+                <width>34</width>
+                <height>25</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Current Spacing</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_4">
+              <property name="maximumSize">
+               <size>
+                <width>55</width>
+                <height>20</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_3">
+              <property name="maximumSize">
+               <size>
+                <width>55</width>
+                <height>16777215</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_2">
+              <property name="maximumSize">
+               <size>
+                <width>55</width>
+                <height>16777215</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <item>
+             <widget class="QPushButton" name="pushButton_2">
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Reset</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton">
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Update</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QWidget" name="verticalWidget" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>330</height>
+             </size>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="Image_widget" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>700</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <layout class="QGridLayout" name="gridLayout" rowstretch="1,1">
+       <item row="1" column="2">
+        <widget class="QGroupBox" name="G3">
+         <property name="minimumSize">
+          <size>
+           <width>420</width>
+           <height>320</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Coronal</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_G3"/>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <layout class="QVBoxLayout" name="verticalLayout_Transverse">
+         <item alignment="Qt::AlignHCenter">
+          <widget class="QToolButton" name="toolButton_Transverse">
+           <property name="text">
+            <string>...</string>
+           </property>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignHCenter">
+          <widget class="QScrollBar" name="verticalScrollBar">
+           <property name="minimumSize">
+            <size>
+             <width>10</width>
+             <height>320</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="0" column="2">
+        <widget class="QGroupBox" name="G2">
+         <property name="minimumSize">
+          <size>
+           <width>420</width>
+           <height>320</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Sagittal</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_G2"/>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <layout class="QVBoxLayout" name="verticalLayout_Sagittal">
+         <item alignment="Qt::AlignHCenter">
+          <widget class="QToolButton" name="toolButton_Sagittal">
+           <property name="text">
+            <string>...</string>
+           </property>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignHCenter">
+          <widget class="QScrollBar" name="verticalScrollBar_2">
+           <property name="minimumSize">
+            <size>
+             <width>10</width>
+             <height>320</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="G4">
+         <property name="minimumSize">
+          <size>
+           <width>420</width>
+           <height>320</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>3D</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_G4"/>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="G1">
+         <property name="minimumSize">
+          <size>
+           <width>420</width>
+           <height>320</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="title">
+          <string>Axial</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_G1"/>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <layout class="QVBoxLayout" name="verticalLayout_Coronal">
+         <item alignment="Qt::AlignHCenter">
+          <widget class="QToolButton" name="toolButton_Coronal">
+           <property name="text">
+            <string>...</string>
+           </property>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignHCenter">
+          <widget class="QScrollBar" name="verticalScrollBar_3">
+           <property name="minimumSize">
+            <size>
+             <width>10</width>
+             <height>320</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="1" column="1">
+        <layout class="QVBoxLayout" name="verticalLayout_Transverse_2">
+         <item alignment="Qt::AlignHCenter">
+          <widget class="QToolButton" name="toolButton_3d">
+           <property name="text">
+            <string>...</string>
+           </property>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignHCenter">
+          <widget class="QToolButton" name="toolButton_reset_3d">
+           <property name="text">
+            <string>...</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1350</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">selection-background-color: rgba(82,130,164,1);
+QMenuBar::item::selected{background:rgba(82,130,164,1);};
+QMenu::item:selected {background:rgba(82,130,164,1);};
+QMenu::item:pressed {background:rgba(82,130,164,0.4);};</string>
+   </property>
+   <property name="defaultUp">
+    <bool>false</bool>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>true</bool>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="title">
+     <string>File</string>
+    </property>
+    <widget class="QMenu" name="menuLoad_Mesh">
+     <property name="title">
+      <string>Load Mesh</string>
+     </property>
+     <addaction name="impAct1"/>
+    </widget>
+    <addaction name="actionAdd_Main_File"/>
+    <addaction name="actionAdd_Seg_File"/>
+    <addaction name="menuLoad_Mesh"/>
+    <addaction name="actionSave_Main_File"/>
+    <addaction name="actionSave_Seg_File"/>
+    <addaction name="actionSave_modeling"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionContrast"/>
+    <addaction name="actionColorMap"/>
+    <addaction name="actionhide_show_A"/>
+    <addaction name="actionhide_show_S"/>
+    <addaction name="actionhide_show_C"/>
+    <addaction name="actionhide_show_3D"/>
+    <addaction name="actionhide_show_edit"/>
+    <addaction name="actionhide_show_label"/>
+    <addaction name="actionModeling"/>
+   </widget>
+   <widget class="QMenu" name="menuSegmentation">
+    <property name="title">
+     <string>Segmentation</string>
+    </property>
+    <addaction name="seg_rib"/>
+    <addaction name="actionseg_pelvic"/>
+    <addaction name="actionseg_pelvic_cs_net"/>
+    <addaction name="actionload_video"/>
+    <addaction name="actionBatch_Segmentation"/>
+    <addaction name="actionRib_Batch_Segmentation"/>
+    <addaction name="actionDirectory_Dice"/>
+   </widget>
+   <widget class="QMenu" name="menuregistration">
+    <property name="title">
+     <string>Registration</string>
+    </property>
+    <widget class="QMenu" name="menuRegistration">
+     <property name="title">
+      <string>Registration</string>
+     </property>
+     <addaction name="actionrigid"/>
+     <addaction name="actionaffine"/>
+    </widget>
+    <addaction name="menuRegistration"/>
+    <addaction name="actionshow_floating_image"/>
+    <addaction name="actionView_Fixed_Image"/>
+    <addaction name="actionshow_registration_image"/>
+    <addaction name="actionshow_compare_image"/>
+   </widget>
+   <widget class="QMenu" name="menuDiagnosis">
+    <property name="title">
+     <string>Diagnosis</string>
+    </property>
+    <addaction name="actionDiagnosis"/>
+   </widget>
+   <widget class="QMenu" name="menuLandmark">
+    <property name="title">
+     <string>Landmark</string>
+    </property>
+    <addaction name="actionLandmark"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuTools"/>
+   <addaction name="menuSegmentation"/>
+   <addaction name="menuLandmark"/>
+   <addaction name="menuregistration"/>
+   <addaction name="menuDiagnosis"/>
+  </widget>
+  <action name="actionSave_Main_File">
+   <property name="text">
+    <string>Save Image File</string>
+   </property>
+   <property name="iconText">
+    <string>Save</string>
+   </property>
+   <property name="toolTip">
+    <string>Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
+  </action>
+  <action name="actionAdd_Seg_File">
+   <property name="text">
+    <string>Load Segmentation File</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionChange">
+   <property name="text">
+    <string>Change</string>
+   </property>
+  </action>
+  <action name="actionAdd_Main_File">
+   <property name="text">
+    <string>Load Image File</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionSave_Seg_File">
+   <property name="text">
+    <string>Save Segmentation File</string>
+   </property>
+  </action>
+  <action name="actionModeling">
+   <property name="text">
+    <string>3D Visualize</string>
+   </property>
+  </action>
+  <action name="actionSave_modeling">
+   <property name="text">
+    <string>Save Mesh</string>
+   </property>
+  </action>
+  <action name="actionContrast">
+   <property name="text">
+    <string>Contrast</string>
+   </property>
+  </action>
+  <action name="actionColorMap">
+   <property name="text">
+    <string>ColorMap</string>
+   </property>
+  </action>
+  <action name="actionhide_show_A">
+   <property name="text">
+    <string>Expand Show A</string>
+   </property>
+  </action>
+  <action name="actionhide_show_S">
+   <property name="text">
+    <string>Expand Show S</string>
+   </property>
+  </action>
+  <action name="actionhide_show_C">
+   <property name="text">
+    <string>Expand Show C</string>
+   </property>
+  </action>
+  <action name="actionhide_show_3D">
+   <property name="text">
+    <string>Expand Show 3D</string>
+   </property>
+  </action>
+  <action name="actionhide_show_edit">
+   <property name="text">
+    <string>Hide Show Edit</string>
+   </property>
+  </action>
+  <action name="actionhide_show_label">
+   <property name="text">
+    <string>Hide Show Label</string>
+   </property>
+  </action>
+  <action name="impAct1">
+   <property name="text">
+    <string>Load Mesh</string>
+   </property>
+  </action>
+  <action name="seg_rib">
+   <property name="text">
+    <string>Rib Segmentation</string>
+   </property>
+  </action>
+  <action name="actionseg_pelvic">
+   <property name="text">
+    <string>Pelvic Segmentation Ⅰ</string>
+   </property>
+  </action>
+  <action name="actionseg_pelvic_cs_net">
+   <property name="text">
+    <string>Pelvic Segmentation Ⅱ</string>
+   </property>
+  </action>
+  <action name="actionDiagnosis">
+   <property name="text">
+    <string>Diagnosis</string>
+   </property>
+  </action>
+  <action name="actionshow_floating_image">
+   <property name="text">
+    <string>View Floating Image</string>
+   </property>
+  </action>
+  <action name="actionshow_registration_image">
+   <property name="text">
+    <string>View Registered Image</string>
+   </property>
+  </action>
+  <action name="actionshow_compare_image">
+   <property name="text">
+    <string>Compare Image</string>
+   </property>
+  </action>
+  <action name="actionrigid">
+   <property name="text">
+    <string>Rigid</string>
+   </property>
+  </action>
+  <action name="actionaffine">
+   <property name="text">
+    <string>Affine</string>
+   </property>
+  </action>
+  <action name="actionload_video">
+   <property name="text">
+    <string>Load Video</string>
+   </property>
+  </action>
+  <action name="actionView_Fixed_Image">
+   <property name="text">
+    <string>View Fixed Image</string>
+   </property>
+  </action>
+  <action name="actionBatch_Segmentation">
+   <property name="text">
+    <string>Pelvic Batch Segmentation</string>
+   </property>
+  </action>
+  <action name="actionRib_Batch_Segmentation">
+   <property name="text">
+    <string>Rib Batch Segmentation</string>
+   </property>
+  </action>
+  <action name="actionDirectory_Dice">
+   <property name="text">
+    <string>Directory Dice</string>
+   </property>
+  </action>
+  <action name="actionLandmark">
+   <property name="text">
+    <string>Landmark</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
