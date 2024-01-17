@@ -5,6 +5,15 @@ Python3.7.10
 
 然后
 ```Bash
+
+# 先安装torch
+# CPU only
+pip install torch==1.13.0+cpu torchvision==0.14.0+cpu torchaudio==0.13.0 --extra-index-url https://download.pytorch.org/whl/cpu
+# 然后SimpleITK
+conda install -c conda-forge simpleitk
+# opencv安装旧版本
+pip install opencv-python==4.3.0.36
+# 最后安装其他依赖
 pip install -r requirements.txt
 ```
 
