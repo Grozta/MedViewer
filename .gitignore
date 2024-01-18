@@ -16,7 +16,6 @@ val
 *.ply
 *.pt
 *.pth
-*.pkl
 predict_label
 img
 models/nnUNet/nnUNetTrainerV2__nnUNetPlansv2.1
