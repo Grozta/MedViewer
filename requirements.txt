@@ -1,8 +1,10 @@
+vtk==9.1.0
+PyQt5==5.9.2
+SimpleITK==2.0.2
+opencv-python==4.6.0.66
+opencv-python-headless
+opencv-contrib-python
 scipy
-vtk
-PyQt5
-SimpleITK
-opencv-python==4.3.0.36
 batchgenerators
 pandas
 medpy
@@ -12,8 +14,6 @@ nibabel
 itk
 itk-elastix
 grad-cam
-opencv-python-headless==4.1.2.30
-opencv-contrib-python==4.3.0.36
 albumentations
 xlwt
 openpyxl
