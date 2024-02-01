@@ -282,3 +282,4 @@ dmypy.json
 cython_debug/
 
 ~$*
+.vscode/
